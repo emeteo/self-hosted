@@ -1,0 +1,12 @@
+version: '3'
+services:
+  watchtower:
+    container_name: watchtower
+    image: containrrr/watchtower:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - WATCHTOWER_NOTIFICATIONS=shoutrrr
+      - WATCHTOWER_NOTIFICATION_URL=generic+https://${NTFY_USER}:${NTFY_PASS}@{{ watchtower_ntfy_host }}/docker?title=WatchtowerUpdates
+# Set com.centurylinklabs.watchtower.enable label to falst in conatiner to don't auto-update

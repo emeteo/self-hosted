@@ -1,0 +1,19 @@
+version: "2.1"
+services:
+  www:
+    image: nginx:alpine
+    container_name: httpd
+    environment:
+      - TZ=UTC
+    volumes:
+      - ./www:/usr/share/nginx/html
+      - ./cache:/var/cache/nginx
+    restart: unless-stopped
+{% if container.proxy is true %}
+    networks:
+      - proxy
+networks:
+  proxy:
+    external: true
+
+{% endif %}

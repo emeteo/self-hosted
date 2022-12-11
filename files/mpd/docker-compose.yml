@@ -1,0 +1,28 @@
+version: '3'
+services:
+  mpd:
+    restart: unless-stopped
+    image: emeteo/mpd:latest
+    container_name: mpd
+    restart: unless-stopped
+    logging:
+      options:
+        tag: "{{.Name}}"
+    ports:
+      - "${MPD_PORT}:6600"
+    volumes:
+      - ${MPD_CNF}:/mpd.conf
+      - nfs_nfs-mp3:/mpd/music:ro
+      - ${MPD_PATH_MPD}:/mpd/.mpd
+      - ./m3u-radio-music-playlists:/mpd/.mpd/playlists
+    devices:
+      - ${MPD_SND}:${MPD_SND}
+    environment:
+      - PUID=${MPD_UID}
+      - PGID=${MPD_GID}
+    cap_add:
+      - SYS_NICE
+volumes:
+  nfs_nfs-mp3:
+    external: true
+  

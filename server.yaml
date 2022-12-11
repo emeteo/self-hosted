@@ -1,0 +1,32 @@
+---
+
+- hosts: server
+  vars:
+    data_root_path: /home/emeteo/docker
+  vars_files:
+    - 'vars/containers.yaml'
+    - 'vars/vault.yaml'
+  tasks:
+    - name: create config directories
+      file:
+        path: "/home/emeteo/docker/{{ item.name }}"
+        state: directory
+      loop: "{{ containers }}"
+      when: item.enable  == "yes"
+
+    - name: copy docker-compose
+      ansible.builtin.template:
+        src: files/{{ item.name }}/docker-compose.yml
+        dest: "{{ data_root_path }}/{{ item.name }}"
+      vars:
+        container: "{{ item }}"
+      loop: "{{ containers }}"
+      when: item.enable  == "yes"
+
+    - name: genere CaddyFile
+      ansible.builtin.template:
+        src: files/caddy/Caddyfile.j2
+        dest: "{{ data_root_path }}/caddy/Caddyfile"
+
+        #  roles:
+        #- role: geerlingguy.docker

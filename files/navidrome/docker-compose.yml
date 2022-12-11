@@ -1,0 +1,24 @@
+version: "3"
+services:
+  navidorme:
+    image: deluan/navidrome:latest
+    container_name: navidrome
+    user: 1000:1000
+    restart: unless-stopped
+    environment:
+      ND_SCANSCHEDULE: 1h
+      ND_LOGLEVEL: info
+      ND_BASEURL: "/"
+      FQDN: "emeteo.mooo.com"
+    volumes:
+      - ./data:/data
+      - nfs_nfs-mp3:/music:ro
+    networks:
+      - proxy
+networks:
+  proxy:
+    external: true
+volumes:
+  nfs_nfs-mp3:
+    external: true
+

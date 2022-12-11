@@ -1,0 +1,19 @@
+version: "2.1"
+services:
+  freshrss:
+    image: lscr.io/linuxserver/freshrss:latest
+    container_name: freshrss
+    environment:
+      - PUID={{ container_uid }}
+      - PGID={{ container_gid }}
+      - TZ=Europe/Madrid
+    volumes:
+      - ./data:/config
+    restart: unless-stopped
+{% if container.proxy is true %}
+    networks: 
+      - proxy
+networks:
+  proxy:
+    external: true
+{% endif %}

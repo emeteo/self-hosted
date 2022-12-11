@@ -1,0 +1,17 @@
+version: "3.0"
+services:
+  memos:
+    image: neosmemo/memos:latest
+    container_name: memos
+    restart: unless-stopped
+    volumes:
+      - ./data/:/var/opt/memos
+
+{% if container.proxy is true %}
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
+{% endif %}

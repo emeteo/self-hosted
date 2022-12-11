@@ -1,0 +1,18 @@
+version: "3"
+services:
+  vaultwarden:
+    image: vaultwarden/server:alpine
+    container_name: vaultwarden
+    volumes:
+      - ./data:/data
+    restart: always
+    networks:
+      - proxy
+    environment:
+      WEBSOCKET_ENABLED: 'true'
+      LOG_FILE: /data/vaultwarden.log
+        #ADMIN_TOKEN: '{{ vaultwarden_token }}'
+      
+networks:
+  proxy:
+    external: true

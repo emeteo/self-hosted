@@ -1,0 +1,24 @@
+containers:
+  - { name: "nfs", proxy: False, subdomain: "" , enable: "yes" }
+  - { name: "duckdns", proxy: False, subdomain: "", enable: "no" }
+  - { name: "caddy", proxy: False, subdomain: "",  enable: "yes" }
+  - { name: "watchtower", proxy: False, subdomain: "",  enable: "yes" }
+  - { name: "audiobookshelf", proxy: true, subdomain: "audio", port: 80 , enable: "yes" }
+  - { name: "www", proxy: true, port: 80, subdomain: "www", enable: "yes" }
+  - { name: "memos", proxy: true, port: 5230, subdomain: "memos", enable: "yes" }
+  - { name: "dozzle", proxy: false, port: "", subdomain: "", enable: "yes" }
+  - { name: "duplicati", proxy: false, port: "", subdomain: "", enable: "yes" }
+  - { name: "freshrss", proxy: true, port: "80", subdomain: "rss", enable: "yes" }
+
+# Self-hosted 
+sh_domain: "debian11.emeteo.local"
+sh_email:  "emeteo@disroot.org"
+sh_subdomain_duckdns: "xxxx"
+
+container_uid: 1000
+container_gid: 1000
+
+nfs_volumes:
+  - { name: 'nfs-mp3',  addr: '192.168.1.2', device: ':/mnt/vol/mp3', target: '/mnt/mp3' }
+  - { name: 'nfs-fotos',  addr: '192.168.1.2', device: ':/mnt/vol/fotos', target: '/mnt/fotos' }
+

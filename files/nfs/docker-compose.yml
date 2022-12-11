@@ -1,0 +1,26 @@
+version: "3"
+services:
+  MyAlpine:
+    image: alpine:latest
+    container_name: alpine
+    volumes:
+{% for item in nfs_volumes %}
+      - {{ item.name }}:{{ item.target }}
+{% endfor  %}
+    command: sleep 10000
+    networks:
+      - proxy
+
+volumes:
+{% for vol in nfs_volumes %}
+  {{ vol.name }}:
+      external: false
+      driver_opts:
+        type: "nfs"
+        o: "addr={{ vol.addr }},ro,nfsvers=4"
+        device: "{{ vol.device }}"
+{% endfor  %}
+networks:
+  proxy:
+    name: proxy
+

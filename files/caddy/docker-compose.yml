@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  caddy:
+    image: caddy:2
+    container_name: caddy
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./caddy-config:/config
+      - ./caddy-data:/data
+    environment:
+      DOMAIN: "{{ sh_domain }}"
+      EMAIL: "{{ sh_email }}"
+      LOG_FILE: "/data/access.log"
+    networks:
+      - proxy
+networks:
+  proxy:
+    external: true
