@@ -1,13 +1,13 @@
 version: '3'
 services:
   wallabag:
-    container_name: wallabag
+    container_name: {{ container.name }}
     image: wallabag/wallabag
     restart: unless-stopped
     environment:
       - MYSQL_ROOT_PASSWORD={{ wallabag_mysql_root_passwd }}
       - SYMFONY__ENV__DATABASE_DRIVER=pdo_mysql
-      - SYMFONY__ENV__DATABASE_HOST=wallabag-db
+      - SYMFONY__ENV__DATABASE_HOST="{{ container.name }}-db"
       - SYMFONY__ENV__DATABASE_PORT=3306
       - SYMFONY__ENV__DATABASE_NAME={{ wallabag_db_name }}
       - SYMFONY__ENV__DATABASE_USER={{ wallabag_db_user }}
@@ -19,10 +19,10 @@ services:
       - SYMFONY__ENV__FROM_EMAIL=wallabag@example.com
       - SYMFONY__ENV__DOMAIN_NAME={{ wallabag_domain_name }}
       - SYMFONY__ENV__SERVER_NAME="My Server"
-      - SYMFONY__ENV__REDIS_HOST=="wallabag-redis"
+      - SYMFONY__ENV__REDIS_HOST=="{{ container.name }}-redis"
 
     ports:
-      - "80"
+      - "9080:80"
     volumes:
       - ./images:/var/www/wallabag/web/assets/images
     healthcheck:
@@ -30,12 +30,16 @@ services:
       interval: 1m
       timeout: 3s
     depends_on:
-      - wallabag_db
-      - wallabag_redis
+      - {{ container.name }}_db
+      - {{ container.name }}_redis
+
     networks:
+{% if container.proxy is true %}
       - proxy
-  wallabag_db:
-    container_name: wallabag-db
+{% endif %}
+      - {{ container.name }}-internal
+  {{ container.name }}_db:
+    container_name: {{ container.name }}-db
     image: mariadb
     restart: unless-stopped
     environment:
@@ -47,10 +51,10 @@ services:
       interval: 20s
       timeout: 3s
     networks:
-      - proxy
+      - {{ container.name }}-internal
 
-  wallabag_redis:
-    container_name: wallabag-redis
+  {{ container.name }}_redis:
+    container_name: {{ container.name }}-redis
     image: redis:alpine
     restart: unless-stopped
     healthcheck:
@@ -58,9 +62,12 @@ services:
       interval: 20s
       timeout: 3s
     networks:
-      - proxy
+      - {{ container.name }}-internal
 networks:
+  {{ container.name }}-internal:
+{% if container.proxy is true %}
   proxy:
     external: true
+{% endif %}
 
 

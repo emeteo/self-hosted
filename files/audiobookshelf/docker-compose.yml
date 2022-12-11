@@ -11,13 +11,10 @@ services:
       - ./podcasts:/podcasts
       - ./config:/config
       - ./metadata:/metadata
+    restart: unless-stopped
 {% if container.proxy is true %}
     networks:
       - proxy
-{% endif %}
-    restart: unless-stopped
-
-{% if container.proxy is true %}
 networks:
   proxy:
     external: true

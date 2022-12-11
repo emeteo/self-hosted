@@ -3,10 +3,10 @@ version: "2.1"
 services:
   duckdns:
     image: lscr.io/linuxserver/duckdns:latest
-    container_name: duckdns
+    container_name: {{ container.name }}
     environment:
-      - PUID=1000 #optional
-      - PGID=1000 #optional
+      - PUID={{ container_uid }}
+      - PGID={{ container_gid }}
       - TZ=Europe/Madrid
       - SUBDOMAINS={{ sh_subdomain_duckdns }}
       - TOKEN={{ duckdns_token }}

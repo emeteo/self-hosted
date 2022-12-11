@@ -2,7 +2,7 @@ version: "2.1"
 services:
   www:
     image: nginx:alpine
-    container_name: httpd
+    container_name: {{ container.name }}
     environment:
       - TZ=UTC
     volumes:

@@ -2,16 +2,18 @@ version: "2.1"
 services:
   podgrab:
     image: akhilrex/podgrab
-    container_name: podgrab
+    container_name: {{ container.name }}
     environment:
       - CHECK_FREQUENCY=30
       - PASSWORD={{ podgrab_passwd }} ## Uncomment to enable basic authentication, username = podgrab
     volumes:
       - ./config:/config
       - ./data:/assets
+{% if container.proxy is true %}
     networks:
       - proxy
-    restart: unless-stopped
 networks:
   proxy:
     external: true
+{% endif %}
+

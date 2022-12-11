@@ -2,19 +2,22 @@ version: "2.1"
 services:
   ntfy:
     image: binwiederhier/ntfy:latest
-    container_name: ntfy
+    container_name: {{ container.name }}
     command:
       - serve
     environment:
       - TZ=UTC
-    user: 1000:1000
+    user: {{ container_uid }}:{{ container_gid }}
     volumes:
       - ./data:/var/lib/ntfy
       - ./cache:/var/cache/ntfy
       - ./ntfy:/etc/ntfy
     restart: unless-stopped
+{% if container.proxy is true %}
     networks:
       - proxy
 networks:
   proxy:
     external: true
+{% endif %}
+

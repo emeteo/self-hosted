@@ -3,7 +3,7 @@ services:
   mpd:
     restart: unless-stopped
     image: emeteo/mpd:latest
-    container_name: mpd
+    container_name: {{ container.name }}
     restart: unless-stopped
     logging:
       options:
@@ -18,8 +18,8 @@ services:
     devices:
       - ${MPD_SND}:${MPD_SND}
     environment:
-      - PUID=${MPD_UID}
-      - PGID=${MPD_GID}
+      - PUID={{ container_uid }}
+      - PGID={{ container_gid }}
     cap_add:
       - SYS_NICE
 volumes:

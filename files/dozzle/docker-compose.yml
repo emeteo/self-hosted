@@ -1,7 +1,7 @@
 version: "3"
 services:
   dozzle:
-    container_name: dozzle
+    container_name: {{ container.name }}
     image: amir20/dozzle:latest
     restart: unless-stopped
     volumes:

@@ -9,6 +9,7 @@ containers:
   - { name: "dozzle", proxy: false, port: "", subdomain: "", enable: "yes" }
   - { name: "duplicati", proxy: false, port: "", subdomain: "", enable: "yes" }
   - { name: "freshrss", proxy: true, port: "80", subdomain: "rss", enable: "yes" }
+  - { name: "wallabag", proxy: false, port: "", subdomain: "", enable: "yes" }
 
 # Self-hosted 
 sh_domain: "debian11.emeteo.local"

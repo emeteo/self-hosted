@@ -1,7 +1,7 @@
 version: "3"
 services:
   homeassistant:
-    container_name: homeassistant
+    container_name: {{ container.name }}
     image: "ghcr.io/home-assistant/home-assistant:stable"
     volumes:
       - ./data:/config
@@ -9,8 +9,14 @@ services:
     restart: unless-stopped
     privileged: true
     network_mode: host
-#    networks:
-#- proxy
-#networks:
-#  proxy:
-#    external: true
+{% if container.proxy is true %}
+    networks:
+      - proxy
+{% endif %}
+    restart: unless-stopped
+
+{% if container.proxy is true %}
+networks:
+  proxy:
+    external: true
+{% endif %}
